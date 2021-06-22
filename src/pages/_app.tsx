@@ -1,8 +1,23 @@
 import type { AppProps } from 'next/app'
+import { AuthProvider } from '../contexts/auth'
+import NextProgressBar from 'nextjs-progressbar'
+
 import '../services/firebase'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+import '../styles/global.scss'
+
+const MyApp = ({ Component, pageProps }: AppProps) => {
+  return (
+    <AuthProvider>
+      <NextProgressBar
+        color="#835afd"
+        startPosition={0.3}
+        stopDelayMs={200}
+        height={3}
+      />
+      <Component {...pageProps} />
+    </AuthProvider>
+  )
 }
 
 export default MyApp
