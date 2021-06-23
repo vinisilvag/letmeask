@@ -169,7 +169,9 @@ const Room: React.FC = () => {
           </div>
         </form>
 
-        {questions.toString()}
+        {questions.map(question => (
+          <p key={question.id}>{question.content}</p>
+        ))}
       </main>
     </div>
   )
