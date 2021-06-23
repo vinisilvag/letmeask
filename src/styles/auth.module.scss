@@ -6,8 +6,8 @@
   aside {
     flex: 7;
 
-    background-color: #835afd;
-    color: #fff;
+    background-color: var(--primary);
+    color: var(--white);
 
     display: flex;
     flex-direction: column;
@@ -25,7 +25,7 @@
       font-size: 26px;
       line-height: 32px;
       margin-top: 16px;
-      color: #f8f8f8;
+      color: var(--gray-white);
       opacity: 0.7;
     }
   }
@@ -62,8 +62,8 @@
       height: 50px;
       border-radius: 8px;
       padding: 0 16px;
-      background-color: #fff;
-      border: 1px solid #a8a8b3;
+      background-color: var(--white);
+      border: 1px solid var(--gray);
     }
 
     button {
@@ -78,11 +78,11 @@
 
   p {
     font-size: 14px;
-    color: #737380;
+    color: var(--gray-text);
     margin-top: 16px;
 
     a {
-      color: #e559f9;
+      color: var(--pink);
     }
   }
 }
@@ -92,8 +92,8 @@
   height: 50px;
   border-radius: 8px;
   font-weight: 500;
-  background-color: #ea4335;
-  color: #fff;
+  background-color: var(--red);
+  color: var(--white);
 
   display: flex;
   justify-content: center;
@@ -118,7 +118,7 @@
 
 .separator {
   font-size: 14px;
-  color: #a8a8b3;
+  color: var(--gray);
 
   margin: 32px 0;
   display: flex;
@@ -128,7 +128,7 @@
     content: '';
     flex: 1;
     height: 1px;
-    background-color: #a8a8b3;
+    background-color: var(--gray);
     margin-right: 16px;
   }
 
@@ -136,7 +136,7 @@
     content: '';
     flex: 1;
     height: 1px;
-    background-color: #a8a8b3;
+    background-color: var(--gray);
     margin-left: 16px;
   }
 }

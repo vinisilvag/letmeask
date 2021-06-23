@@ -11,10 +11,10 @@ import { Button } from '../components/Button'
 import { useAuth } from '../hooks/useAuth'
 import { database } from '../services/firebase'
 
-import illustrationImg from '../public/illustration.svg'
-import logoImg from '../public/logo.svg'
-import googleIconImage from '../public/google-icon.svg'
-import joinRoomIcon from '../public/join-room.svg'
+import illustrationImg from '../../public/illustration.svg'
+import logoImg from '../../public/logo.svg'
+import googleIconImage from '../../public/google-icon.svg'
+import joinRoomIcon from '../../public/join-room.svg'
 
 const Home: React.FC = () => {
   const router = useRouter()

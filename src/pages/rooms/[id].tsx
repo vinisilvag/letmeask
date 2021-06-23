@@ -153,6 +153,8 @@ const Room: React.FC = () => {
             </Button>
           </div>
         </form>
+
+        {questions.toString()}
       </main>
     </div>
   )
