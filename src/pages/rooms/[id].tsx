@@ -1,10 +1,13 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
+import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
 import styles from '../../styles/room.module.scss'
+
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { useAuth } from '../../hooks/useAuth'
 import { Button } from '../../components/Button'
@@ -38,14 +41,24 @@ type Question = {
   isAnswered: boolean
 }
 
+type CreateQuestionFormData = {
+  newQuestion: string
+}
+
 const Room: React.FC = () => {
   const { user, signInWithGoogle } = useAuth()
   const router = useRouter()
   const { id: roomCode } = router.query
 
-  const [newQuestion, setNewQuestion] = useState('')
   const [questions, setQuestions] = useState<Question[]>([])
   const [title, setTitle] = useState('')
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting }
+  } = useForm<CreateQuestionFormData>()
 
   useEffect(() => {
     const roomRef = database.ref(`rooms/${roomCode}`)
@@ -71,31 +84,32 @@ const Room: React.FC = () => {
     })
   }, [roomCode])
 
-  const handleSendQuestion = async (event: FormEvent) => {
-    event.preventDefault()
+  const handleSendQuestion: SubmitHandler<CreateQuestionFormData> =
+    async data => {
+      const { newQuestion } = data
 
-    if (newQuestion.trim() === '') {
-      return
+      if (newQuestion.trim() === '') {
+        return
+      }
+
+      if (!user) {
+        throw new Error('You must be logged in')
+      }
+
+      const question = {
+        content: newQuestion,
+        author: {
+          name: user.name,
+          avatar: user.avatar
+        },
+        isHighlighted: false,
+        isAnswered: false
+      }
+
+      await database.ref(`rooms/${roomCode}/questions`).push(question)
+
+      reset({ newQuestion: '' })
     }
-
-    if (!user) {
-      throw new Error('You must be logged in')
-    }
-
-    const question = {
-      content: newQuestion,
-      author: {
-        name: user.name,
-        avatar: user.avatar
-      },
-      isHighlighted: false,
-      isAnswered: false
-    }
-
-    await database.ref(`rooms/${roomCode}/questions`).push(question)
-
-    setNewQuestion('')
-  }
 
   return (
     <div className={styles.pageRoom}>
@@ -109,7 +123,9 @@ const Room: React.FC = () => {
 
       <header>
         <div className={styles.content}>
-          <Image src={logoImg} alt="Letmeask" height={45} />
+          <Link href="/" passHref>
+            <Image src={logoImg} alt="Letmeask" height={45} />
+          </Link>
           <RoomCode code={String(roomCode)} />
         </div>
       </header>
@@ -120,11 +136,10 @@ const Room: React.FC = () => {
           {questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
         </div>
 
-        <form onSubmit={handleSendQuestion}>
+        <form onSubmit={handleSubmit(handleSendQuestion)}>
           <textarea
             placeholder="O que você quer perguntar?"
-            onChange={event => setNewQuestion(event.target.value)}
-            value={newQuestion}
+            {...register('newQuestion')}
           />
 
           <div className={styles.formFooter}>
@@ -148,7 +163,7 @@ const Room: React.FC = () => {
               </span>
             )}
 
-            <Button type="submit" disabled={!user}>
+            <Button type="submit" isLoading={isSubmitting} disabled={!user}>
               Enviar pergunta
             </Button>
           </div>

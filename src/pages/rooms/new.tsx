@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react'
+import React from 'react'
 
 import Head from 'next/head'
 import Image from 'next/image'
@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import styles from '../../styles/auth.module.scss'
+
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { Button } from '../../components/Button'
 
@@ -15,13 +17,22 @@ import { database } from '../../services/firebase'
 import illustrationImg from '../../../public/illustration.svg'
 import logoImg from '../../../public/logo.svg'
 
+type CreateRoomFormData = {
+  newRoom: string
+}
+
 const NewRoom: React.FC = () => {
   const { user } = useAuth()
   const router = useRouter()
-  const [newRoom, setNewRoom] = useState('')
 
-  const handleCreateRoom = async (event: FormEvent) => {
-    event.preventDefault()
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting }
+  } = useForm<CreateRoomFormData>()
+
+  const handleCreateRoom: SubmitHandler<CreateRoomFormData> = async data => {
+    const { newRoom } = data
 
     if (newRoom.trim() === '') {
       return
@@ -76,14 +87,15 @@ const NewRoom: React.FC = () => {
 
           <h2>Crie uma nova sala</h2>
 
-          <form onSubmit={handleCreateRoom}>
+          <form onSubmit={handleSubmit(handleCreateRoom)}>
             <input
               type="text"
               placeholder="Digite o código da sala"
-              onChange={event => setNewRoom(event.target.value)}
-              value={newRoom}
+              {...register('newRoom')}
             />
-            <Button type="submit">Criar sala</Button>
+            <Button type="submit" isLoading={isSubmitting}>
+              Criar sala
+            </Button>
           </form>
 
           <p>

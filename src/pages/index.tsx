@@ -1,10 +1,13 @@
-import React, { useState, FormEvent } from 'react'
+import React from 'react'
 
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
 import styles from '../styles/auth.module.scss'
+
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 import { Button } from '../components/Button'
 
@@ -16,10 +19,19 @@ import logoImg from '../../public/logo.svg'
 import googleIconImage from '../../public/google-icon.svg'
 import joinRoomIcon from '../../public/join-room.svg'
 
+type JoinRoomFormData = {
+  roomCode: string
+}
+
 const Home: React.FC = () => {
   const router = useRouter()
   const { user, signInWithGoogle } = useAuth()
-  const [roomCode, setRoomCode] = useState('')
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting }
+  } = useForm<JoinRoomFormData>()
 
   const handleCreateRoom = async () => {
     if (!user) {
@@ -29,8 +41,8 @@ const Home: React.FC = () => {
     router.push('/rooms/new')
   }
 
-  const handleJoinRoom = async (event: FormEvent) => {
-    event.preventDefault()
+  const handleJoinRoom: SubmitHandler<JoinRoomFormData> = async data => {
+    const { roomCode } = data
 
     if (roomCode.trim() === '') {
       return
@@ -39,7 +51,7 @@ const Home: React.FC = () => {
     const roomRef = await database.ref(`rooms/${roomCode}`).get()
 
     if (!roomRef.exists()) {
-      alert('Room does not exists.')
+      toast.error('Sala não encontrada.')
       return
     }
 
@@ -92,14 +104,13 @@ const Home: React.FC = () => {
 
           <div className={styles.separator}>ou entre em uma sala</div>
 
-          <form onSubmit={handleJoinRoom}>
+          <form onSubmit={handleSubmit(handleJoinRoom)}>
             <input
               type="text"
               placeholder="Digite o código da sala"
-              onChange={event => setRoomCode(event.target.value)}
-              value={roomCode}
+              {...register('roomCode')}
             />
-            <Button type="submit">
+            <Button type="submit" isLoading={isSubmitting}>
               <div>
                 <Image src={joinRoomIcon} alt="Entrar na sala" />
               </div>
