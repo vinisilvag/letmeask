@@ -1,22 +1,25 @@
-import React from 'react'
+import React, { useState, FormEvent } from 'react'
+
 import Head from 'next/head'
 import Image from 'next/image'
-
 import { useRouter } from 'next/router'
 
 import styles from '../styles/auth.module.scss'
 
-import illustrationImg from '../assets/images/illustration.svg'
-import logoImg from '../assets/images/logo.svg'
-import googleIconImage from '../assets/images/google-icon.svg'
-import joinRoomIcon from '../assets/images/join-room.svg'
-
 import { Button } from '../components/Button'
+
 import { useAuth } from '../hooks/useAuth'
+import { database } from '../services/firebase'
+
+import illustrationImg from '../public/illustration.svg'
+import logoImg from '../public/logo.svg'
+import googleIconImage from '../public/google-icon.svg'
+import joinRoomIcon from '../public/join-room.svg'
 
 const Home: React.FC = () => {
   const router = useRouter()
   const { user, signInWithGoogle } = useAuth()
+  const [roomCode, setRoomCode] = useState('')
 
   const handleCreateRoom = async () => {
     if (!user) {
@@ -24,6 +27,23 @@ const Home: React.FC = () => {
     }
 
     router.push('/rooms/new')
+  }
+
+  const handleJoinRoom = async (event: FormEvent) => {
+    event.preventDefault()
+
+    if (roomCode.trim() === '') {
+      return
+    }
+
+    const roomRef = await database.ref(`rooms/${roomCode}`).get()
+
+    if (!roomRef.exists()) {
+      alert('Room does not exists.')
+      return
+    }
+
+    router.push(`/rooms/${roomCode}`)
   }
 
   return (
@@ -72,8 +92,13 @@ const Home: React.FC = () => {
 
           <div className={styles.separator}>ou entre em uma sala</div>
 
-          <form>
-            <input type="text" placeholder="Digite o código da sala" />
+          <form onSubmit={handleJoinRoom}>
+            <input
+              type="text"
+              placeholder="Digite o código da sala"
+              onChange={event => setRoomCode(event.target.value)}
+              value={roomCode}
+            />
             <Button type="submit">
               <div>
                 <Image src={joinRoomIcon} alt="Entrar na sala" />
