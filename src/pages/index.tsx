@@ -1,15 +1,25 @@
 import React from 'react'
 
+import {
+  Container,
+  AsideContainer,
+  PageTitle,
+  PageSubtitle,
+  MainContainer,
+  Content,
+  CreateRoomButton,
+  Separator,
+  FormContainer,
+  Input,
+  CustomButton
+} from '../styles/auth.page'
+
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
-import styles from '../styles/auth.module.scss'
-
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-
-import { Button } from '../components/Button'
 
 import { useAuth } from '../hooks/useAuth'
 import { database } from '../services/firebase'
@@ -64,7 +74,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className={styles.pageAuth}>
+    <Container>
       <Head>
         <title>Home | Letmeask</title>
         <meta
@@ -73,7 +83,7 @@ const Home: React.FC = () => {
         />
       </Head>
 
-      <aside>
+      <AsideContainer>
         <div>
           <Image
             src={illustrationImg}
@@ -82,49 +92,49 @@ const Home: React.FC = () => {
           />
         </div>
 
-        <strong>
+        <PageTitle>
           Toda pergunta tem
           <br />
           uma resposta.
-        </strong>
-        <p>
+        </PageTitle>
+        <PageSubtitle>
           Aprenda e compartilhe conhecimento
           <br />
           com outras pessoas
-        </p>
-      </aside>
+        </PageSubtitle>
+      </AsideContainer>
 
-      <main>
-        <div className={styles.mainContent}>
+      <MainContainer>
+        <Content>
           <div>
             <Image src={logoImg} alt="Letmeask" />
           </div>
 
-          <button className={styles.createRoom} onClick={handleCreateRoom}>
+          <CreateRoomButton onClick={handleCreateRoom}>
             <div>
               <Image src={googleIconImage} alt="Logo do Google" />
             </div>
             Crie sua sala com o Google
-          </button>
+          </CreateRoomButton>
 
-          <div className={styles.separator}>ou entre em uma sala</div>
+          <Separator>ou entre em uma sala</Separator>
 
-          <form onSubmit={handleSubmit(handleJoinRoom)}>
-            <input
+          <FormContainer onSubmit={handleSubmit(handleJoinRoom)}>
+            <Input
               type="text"
               placeholder="Digite o código da sala"
               {...register('roomCode')}
             />
-            <Button type="submit" isLoading={isSubmitting}>
+            <CustomButton type="submit" isLoading={isSubmitting}>
               <div>
                 <Image src={joinRoomIcon} alt="Entrar na sala" />
               </div>
               Entrar na sala
-            </Button>
-          </form>
-        </div>
-      </main>
-    </div>
+            </CustomButton>
+          </FormContainer>
+        </Content>
+      </MainContainer>
+    </Container>
   )
 }
 

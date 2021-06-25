@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import '../services/firebase'
 
-import '../styles/global.scss'
+import GlobalStyles from '../styles/global'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -20,6 +20,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       />
       <ToastContainer />
       <Component {...pageProps} />
+      <GlobalStyles />
     </AuthProvider>
   )
 }

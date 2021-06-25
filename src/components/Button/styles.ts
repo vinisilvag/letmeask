@@ -1,16 +1,19 @@
-.button {
+import styled from 'styled-components'
+
+export const CustomButton = styled.button<{ outlined: boolean }>`
   height: 50px;
   border-radius: 8px;
   font-weight: 500;
-  background-color: var(--primary);
-  color: var(--white);
+  background-color: ${props =>
+    props.outlined ? 'var(--white)' : 'var(--primary)'};
+  color: ${props => (props.outlined ? 'var(--primary)' : 'var(--white)')};
   padding: 0 32px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border: 0;
+  border: ${props => (props.outlined ? '1px solid var(--primary)' : 0)};
 
   transition: filter 0.1s;
 
@@ -30,12 +33,4 @@
     opacity: 0.6;
     cursor: not-allowed;
   }
-}
-
-.outlined {
-  background-color: var(--white);
-  border: 1px solid var(--primary);
-  color: var(--primary);
-
-  padding: 0 24px;
-}
+`

@@ -1,8 +1,15 @@
 import React from 'react'
 
-import Image from 'next/image'
+import {
+  QuestionContainer,
+  QuestionContent,
+  UserInfo,
+  Footer,
+  AuthorName,
+  ButtonsContainer
+} from './styles'
 
-import styles from './styles.module.scss'
+import Image from 'next/image'
 
 type QuestionProps = {
   content: string
@@ -10,24 +17,31 @@ type QuestionProps = {
     name: string
     avatar: string
   }
+  isAnswered?: boolean
+  isHighlighted?: boolean
 }
 
 export const Question: React.FC<QuestionProps> = ({
   content,
   author,
+  isAnswered = false,
+  isHighlighted = false,
   children
 }) => {
   return (
-    <div className={styles.question}>
-      <p>{content}</p>
-      <footer>
-        <div className={styles.userInfo}>
+    <QuestionContainer
+      isAnswered={isAnswered}
+      isHighlighted={isHighlighted && !isAnswered}
+    >
+      <QuestionContent>{content}</QuestionContent>
+      <Footer>
+        <UserInfo>
           <Image src={author.avatar} alt={author.name} width={32} height={32} />
-          <span>{author.name}</span>
-        </div>
+          <AuthorName isHighlighted={isHighlighted}>{author.name}</AuthorName>
+        </UserInfo>
 
-        <div>{children}</div>
-      </footer>
-    </div>
+        <ButtonsContainer>{children}</ButtonsContainer>
+      </Footer>
+    </QuestionContainer>
   )
 }

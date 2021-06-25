@@ -1,15 +1,25 @@
 import React from 'react'
 
+import {
+  Container,
+  AsideContainer,
+  PageTitle,
+  PageSubtitle,
+  MainContainer,
+  Content,
+  Title,
+  FormContainer,
+  Input,
+  CustomButton,
+  JoinRoomLink
+} from '../../styles/auth.page'
+
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import styles from '../../styles/auth.module.scss'
-
 import { SubmitHandler, useForm } from 'react-hook-form'
-
-import { Button } from '../../components/Button'
 
 import { useAuth } from '../../hooks/useAuth'
 import { database } from '../../services/firebase'
@@ -45,11 +55,11 @@ const NewRoom: React.FC = () => {
       authorId: user?.id
     })
 
-    router.push(`/rooms/${firebaseRoom.key}`)
+    router.push(`/admin/rooms/${firebaseRoom.key}`)
   }
 
   return (
-    <div className={styles.pageAuth}>
+    <Container>
       <Head>
         <title>Criar sala | Letmeask</title>
         <meta
@@ -58,7 +68,7 @@ const NewRoom: React.FC = () => {
         />
       </Head>
 
-      <aside>
+      <AsideContainer>
         <div>
           <Image
             src={illustrationImg}
@@ -67,44 +77,44 @@ const NewRoom: React.FC = () => {
           />
         </div>
 
-        <strong>
+        <PageTitle>
           Toda pergunta tem
           <br />
           uma resposta.
-        </strong>
-        <p>
+        </PageTitle>
+        <PageSubtitle>
           Aprenda e compartilhe conhecimento
           <br />
           com outras pessoas
-        </p>
-      </aside>
+        </PageSubtitle>
+      </AsideContainer>
 
-      <main>
-        <div className={styles.mainContent}>
+      <MainContainer>
+        <Content>
           <div>
             <Image src={logoImg} alt="Letmeask" />
           </div>
 
-          <h2>Crie uma nova sala</h2>
+          <Title>Crie uma nova sala</Title>
 
-          <form onSubmit={handleSubmit(handleCreateRoom)}>
-            <input
+          <FormContainer onSubmit={handleSubmit(handleCreateRoom)}>
+            <Input
               type="text"
               placeholder="Digite o código da sala"
               {...register('newRoom')}
             />
-            <Button type="submit" isLoading={isSubmitting}>
+            <CustomButton type="submit" isLoading={isSubmitting}>
               Criar sala
-            </Button>
-          </form>
+            </CustomButton>
+          </FormContainer>
 
-          <p>
+          <JoinRoomLink>
             Quer entrar em uma sala já existente?{' '}
             <Link href="/">Clique aqui</Link>
-          </p>
-        </div>
-      </main>
-    </div>
+          </JoinRoomLink>
+        </Content>
+      </MainContainer>
+    </Container>
   )
 }
 

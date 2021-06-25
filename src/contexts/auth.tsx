@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react'
 import { firebase, auth } from '../services/firebase'
+import { setCookie, destroyCookie } from 'nookies'
 
 type User = {
   id: string
@@ -26,11 +27,17 @@ export const AuthProvider = ({ children }) => {
           throw new Error('Missing information from Google Account.')
         }
 
+        setCookie(undefined, 'letmeask.loggedId', uid, {
+          maxAge: 60 * 60 * 24 * 7 // 1 week
+        })
+
         setUser({
           id: uid,
           name: displayName,
           avatar: photoURL
         })
+      } else {
+        destroyCookie(undefined, 'letmeask.loggedId')
       }
     })
 

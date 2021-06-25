@@ -1,8 +1,8 @@
 import React from 'react'
 
-import Image from 'next/image'
+import { RoomButton, ImageContainer, RoomCodeText } from './styles'
 
-import styles from './styles.module.scss'
+import Image from 'next/image'
 
 import copyImg from '../../../public/copy.svg'
 
@@ -16,12 +16,12 @@ export const RoomCode: React.FC<RoomCodeProps> = ({ code }) => {
   }
 
   return (
-    <button className={styles.roomCode} onClick={copyRoomCodeToClipboard}>
-      <div>
+    <RoomButton onClick={copyRoomCodeToClipboard}>
+      <ImageContainer>
         <Image src={copyImg} alt="Copy room code" />
-      </div>
+      </ImageContainer>
 
-      <span>Sala #{code}</span>
-    </button>
+      <RoomCodeText>Sala #{code}</RoomCodeText>
+    </RoomButton>
   )
 }

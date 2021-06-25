@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from 'react'
 
-import styles from './styles.module.scss'
+import { CustomButton } from './styles'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   isLoading?: boolean
@@ -14,11 +14,8 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   return (
-    <button
-      className={[styles.button, isOutlined && styles.outlined].join(' ')}
-      {...props}
-    >
+    <CustomButton outlined={isOutlined} {...props}>
       {isLoading ? 'Carregando...' : children}
-    </button>
+    </CustomButton>
   )
 }
