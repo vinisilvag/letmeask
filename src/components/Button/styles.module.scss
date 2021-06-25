@@ -31,3 +31,11 @@
     cursor: not-allowed;
   }
 }
+
+.outlined {
+  background-color: var(--white);
+  border: 1px solid var(--primary);
+  color: var(--primary);
+
+  padding: 0 24px;
+}

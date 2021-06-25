@@ -55,6 +55,11 @@ const Home: React.FC = () => {
       return
     }
 
+    if (roomRef.val().closedAt) {
+      toast.error('Sala já foi encerrada.')
+      return
+    }
+
     router.push(`/rooms/${roomCode}`)
   }
 
