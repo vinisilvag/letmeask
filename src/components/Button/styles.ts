@@ -5,9 +5,9 @@ export const CustomButton = styled.button<{ outlined: boolean }>`
   border-radius: 8px;
   font-weight: 500;
   background-color: ${props =>
-    props.outlined ? 'var(--white)' : 'var(--primary)'};
+    props.outlined ? 'transparent' : 'var(--primary)'};
   color: ${props => (props.outlined ? 'var(--primary)' : 'var(--white)')};
-  padding: 0 32px;
+  padding: 0 ${props => (props.outlined ? '24px' : '32px')};
 
   display: flex;
   align-items: center;

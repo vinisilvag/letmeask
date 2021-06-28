@@ -5,7 +5,7 @@ export const RoomButton = styled.button`
   border-radius: 8px;
   overflow: hidden;
 
-  background-color: var(--white);
+  background-color: transparent;
   border: 1px solid var(--primary);
 
   transition: filter 0.1s;
